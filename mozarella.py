@@ -189,5 +189,3 @@ def generate_midi_from_embeddings(embeddings, tempo=1000000, ppqn=960, path="./o
     midi.write_midifile(path, pattern)
     print("Wrote midi file at the path {} with {} notes.".format(path, len(track)))
     print("You can use either GarageBand on MacOS or timidity on linux to convert it to a .wav file.")
-
-    return track
