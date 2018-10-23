@@ -6,7 +6,7 @@ import midi
 def find_files(datadir="./data/", pattern="*.mid"):
     '''Recursively finds all files matching the pattern.'''
     files = []
-    for root, dirnames, filenames in os.walk(datadir):
+    for root, _, filenames in os.walk(datadir):
         for filename in fnmatch.filter(filenames, pattern):
             files.append(str(os.path.join(root, filename)))
     return files

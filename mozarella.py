@@ -3,7 +3,7 @@ import numpy as np
 import os
 import random
 import fnmatch
-from frypan import *
+from fryer import find_files, tick_delta_to_ms
 
 # DO NOT CHANGE
 min_note_idx=24
@@ -11,8 +11,6 @@ max_note_idx=102
 
 # stick len is number of notes in stick + milliseconds scalar
 stick_len=max_note_idx-min_note_idx+1
-
-
 
 def midi_event_generator(datadir="./data/"):
     files = find_files(datadir)
@@ -25,7 +23,7 @@ def fry(datadir="./data/"):
     random.shuffle(files)
     for midifile in files:
         print("yielding file {}".format(midifile))
-        yield generate_sticks(midifile)
+        yield fry_all_sticks(midifile)
 
 
 def midi_emedding_generator(datadir="./data/"):
@@ -34,7 +32,7 @@ def midi_emedding_generator(datadir="./data/"):
     random.shuffle(files)
     for midifile in files:
         print("yielding file {}".format(midifile))
-        yield generate_sticks(midifile)
+        yield fry_all_sticks(midifile)
 
 
 def generate_events(midifile):
@@ -42,7 +40,7 @@ def generate_events(midifile):
     return midi_dump.resolution, midi_dump[1]
 
 
-def generate_sticks(midifile):
+def fry_all_sticks(midifile):
     print("generating sticks for file {}".format(midifile))
     midi_dump = midi.read_midifile(midifile)
     midi_track = midi_dump[0]
@@ -66,7 +64,7 @@ def generate_sticks(midifile):
             note_state.append(event_data[0])
         
         elif event_name is midi.NoteOnEvent.name  and delta_ticks != 0:
-            sticks.append(generate_stick(note_state, delta_ticks, tempo, ppqn))            
+            sticks.append(fry_stick(note_state, delta_ticks, tempo, ppqn))            
             note_state.append(event_data[0])
             
         elif event_name is midi.NoteOffEvent.name and delta_ticks == 0:
@@ -74,7 +72,7 @@ def generate_sticks(midifile):
                 note_state.remove(event_data[0])
             
         elif event_name is midi.NoteOffEvent.name and delta_ticks != 0:
-            sticks.append(generate_stick(note_state, delta_ticks, tempo, ppqn))
+            sticks.append(fry_stick(note_state, delta_ticks, tempo, ppqn))
             if event_data[0] in note_state:
                 note_state.remove(event_data[0])
         
@@ -88,7 +86,7 @@ def generate_sticks(midifile):
             tempo = int(tempo_binary, 2)
             
         elif event_name is midi.SetTempoEvent.name and delta_ticks != 0:
-            sticks.append(generate_stick(note_state, delta_ticks, tempo, ppqn))
+            sticks.append(fry_stick(note_state, delta_ticks, tempo, ppqn))
             tempo_binary = (format(curr_event.data[0], '08b')+
                             format(curr_event.data[1], '08b')+
                             format(curr_event.data[2], '08b'))
@@ -104,13 +102,15 @@ def generate_sticks(midifile):
             continue
     return sticks
 
-def generate_stick(note_state, delta_ticks, tempo, ppqn):
+
+def fry_stick(note_state, delta_ticks, tempo, ppqn):
     ms = tick_delta_to_ms(delta_ticks, tempo, ppqn)
     stick = [0 for x in range(stick_len)]
     
     # if there are any notes playing, add the top note to the list
     if len(note_state) != 0:
-        if (max(note_state) < max_note_idx):
-            stick[-min_note_idx] = 1
+        top_note=max(note_state)
+        if (top_note >= min_note_idx) and (top_note < max_note_idx):
+            stick[top_note-min_note_idx] = 1
     stick[-1] = ms
     return stick
