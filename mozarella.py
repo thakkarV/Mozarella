@@ -13,7 +13,7 @@ DEFAULT_VELOCITY = 100
 EMBEDDING_LENGTH = MAX_NOTE_IDX-MIN_NOTE_IDX+1
 
 # this is what the students will be using
-def midi_emedding_generator(datadir="./data/"):
+def midi_embedding_generator(datadir="./data/"):
     '''Yields a list of embedding lists each time it is called from the
         input path to the midi corpus'''
     files = find_files(datadir)

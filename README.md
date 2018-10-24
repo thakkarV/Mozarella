@@ -23,11 +23,11 @@ python setup.py install
 To generate embeddings to use as training data for LSTM
 ```python
 # import embedding generator
-from mozarella import midi_emedding_generator
+from mozarella import midi_embedding_generator
 
 # call the generator to get list of embeddings
 for epoch_i in range(epoch_n):
-    for embeddings in midi_emedding_generator("./path/to/corpus"):
+    for embeddings in midi_embedding_generator("./path/to/corpus"):
         # now use the list to train
         train_on(embeddings)
 ```
@@ -53,10 +53,10 @@ You can play the generated midi file by using GarageBand on MacOS or [timidity](
 
 
 ## Format of Embeddings
-Each call to midi_emedding_generator yields a list of lists of embeddings.
+Each call to midi_embedding_generator yields a list of lists of embeddings.
 
 Say we do the follwoing
-```for embeddings in midi_emedding_generator("./path/to/corpus"):```
+```for embeddings in midi_embedding_generator("./path/to/corpus"):```
 then `len(embeddings)` is the total number of embeddings for this song. All the embeddings are in chronological order of the notes in the song. 
 
 Each element in this list is also a list that contains the embedding of the current note being played in one-hot format with the last element representing the duration of that note in milliseconds. Since we are assuming all notes are piano notes the length of each individual embedding is therefore 89. First 88 elments one-hot encode the note and the last 89th element contains duration.
