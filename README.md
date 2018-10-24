@@ -1,9 +1,10 @@
-# Mozarella:
+# Mozarella
+**A Mozart MIDI Corpus Interface With A Cheezy Name for Training RNNs**
 
-A midi corpus reader and embedding generator for EC500 Deep Learnign Class Homeworks
+Also works for other composers' music, but with some prejudice.
+Originally created for EC500 Deep Learning.
 
-## Usage
-### Installing
+## Installation
 You will need `python-midi` python module for reading and writing midi files.
 
 The module is publically available here: https://github.com/vishnubob/python-midi
@@ -17,6 +18,7 @@ git checkout feature/python3
 python setup.py install
 ```
 
+## Usage
 ### Training
 To generate embeddings to use as training data for LSTM
 ```python
