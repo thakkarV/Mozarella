@@ -6,8 +6,8 @@ import fnmatch
 from fryer import find_files, tick_delta_to_ms, ms_to_tick_delta
 
 # DO NOT CHANGE
-MIN_NOTE_IDX = 24
-MAX_NOTE_IDX = 102
+MIN_NOTE_IDX = 21
+MAX_NOTE_IDX = 108
 DEFAULT_VELOCITY = 100
 # embd len is number of notes in embd + milliseconds scalar
 EMBEDDING_LENGTH = MAX_NOTE_IDX-MIN_NOTE_IDX+1
