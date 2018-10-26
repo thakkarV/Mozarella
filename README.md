@@ -12,10 +12,7 @@ The module is publically available here: https://github.com/vishnubob/python-mid
 Make sure to install the python3 version by switching to the feature/python3 branch. You can also follow the following instructions for installation.
 
 ```bash
-git clone https://github.com/vishnubob/python-midi.git
-cd python-midi
-git checkout feature/python3
-python setup.py install
+pip3 install --user git+https://github.com/vishnubob/python-midi@feature/python3
 ```
 
 ## Usage
